@@ -108,6 +108,7 @@ variable "subnets" {
 
 variable "private_cidr" {
   description = "VPC private addressing, used for a security group"
+  default     = ["127.0.0.1/32"]
   type        = "list"
 }
 
