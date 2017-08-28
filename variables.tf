@@ -111,6 +111,12 @@ variable "private_cidr" {
   type        = "list"
 }
 
+variable "allowed_security_groups" {
+  description = "A list of Security Group ID's to allow access to."
+  default     = []
+  type        = "list"
+}
+
 variable "rds_vpc_id" {
   description = "VPC to connect to, used for a security group"
   type        = "string"

@@ -84,7 +84,19 @@ resource "aws_security_group" "main_db_access" {
   tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
 }
 
-resource "aws_security_group_rule" "allow_db_access" {
+resource "aws_security_group_rule" "allow_db_access_sg" {
+  count                    = "${length(var.allowed_security_groups)}"
+  type                     = "ingress"
+
+  from_port                = "${var.database_port}"
+  to_port                  = "${var.database_port}"
+  protocol                 = "tcp"
+  source_security_group_id = "${element(var.allowed_security_groups, count.index)}"
+
+  security_group_id = "${aws_security_group.main_db_access.id}"
+}
+
+resource "aws_security_group_rule" "allow_db_access_cidr" {
   type = "ingress"
 
   from_port   = "${var.database_port}"
