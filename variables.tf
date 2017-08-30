@@ -101,9 +101,9 @@ variable "publicly_accessible" {
 }
 
 # RDS Subnet Group Variables
-variable "subnets" {
-  description = "List of subnets DB should be available at. It might be one subnet."
-  type        = "list"
+variable "db_subnet_group_name" {
+  description = "DB subnet group name."
+  type        = "string"
 }
 
 variable "private_cidr" {
