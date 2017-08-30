@@ -23,8 +23,8 @@ resource "aws_db_instance" "main_rds_instance" {
   vpc_security_group_ids = ["${aws_security_group.main_db_access.id}"]
 
   # We're creating a subnet group in the module and passing in the name
-  db_subnet_group_name = "${aws_db_subnet_group.main_db_subnet_group.name}"
-  parameter_group_name = "${aws_db_parameter_group.main_rds_instance.id}"
+  db_subnet_group_name = "${var.subnets[0]}" //"${aws_db_subnet_group.main_db_subnet_group.name}"
+  parameter_group_name = "${var.db_parameter_group}"
 
   # We want the multi-az setting to be toggleable, but off by default
   multi_az            = "${var.rds_is_multi_az}"
@@ -44,33 +44,6 @@ resource "aws_db_instance" "main_rds_instance" {
 
   backup_retention_period = "${var.backup_retention_period}"
   backup_window           = "${var.backup_window}"
-
-  tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
-}
-
-resource "aws_db_parameter_group" "main_rds_instance" {
-  name   = "${var.rds_instance_identifier}-${replace(var.db_parameter_group, ".", "")}-custom-params"
-  family = "${var.db_parameter_group}"
-
-  # Example for MySQL
-  # parameter {
-  #   name = "character_set_server"
-  #   value = "utf8"
-  # }
-
-
-  # parameter {
-  #   name = "character_set_client"
-  #   value = "utf8"
-  # }
-
-  tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
-}
-
-resource "aws_db_subnet_group" "main_db_subnet_group" {
-  name        = "${var.rds_instance_identifier}-subnetgrp"
-  description = "RDS subnet group"
-  subnet_ids  = ["${var.subnets}"]
 
   tags = "${merge(var.tags, map("Name", format("%s", var.rds_instance_identifier)))}"
 }
