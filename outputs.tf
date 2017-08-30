@@ -17,11 +17,6 @@ output "rds_instance_endpoint" {
   value = "${aws_db_instance.main_rds_instance.endpoint}"
 }
 
-# Output the ID of the Subnet Group
-output "subnet_group_id" {
-  value = "${aws_db_subnet_group.main_db_subnet_group.id}"
-}
-
 # Output DB security group ID
 output "security_group_id" {
   value = "${aws_security_group.main_db_access.id}"
